@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			var n = 20;
+			var m = 30;
+			var a = new Array ();
+			for (var i = 0; i < n; i++){
+				a[i] = new Array ();
+				for (var g = 0; g < m; g++){
+					a[i][g] = getRandomInt(0,1);
+				}
+			}
+
+			function getRandomInt(min, max)
+				{
+ 					 return Math.floor(Math.random() * (max - min + 1)) + min;
+				}
+			function check() 
+				{
+					var z, s;
+					var t = new Array(); 
+					for (var i = 0; i < n; i++){
+						t[i] = new Array();
+						for (var g = 0; g < m; g++){
+							z = 0;
+							if (i == 0){
+								if (g == 0){
+									z = a[0][1] + a[1][1] + a[1][0];
+								} else if (g == m) {
+									z = a[0][m-1] + a[1][m-1] + a[1][m];	
+								} else {
+									z = a[0][g-1] + a[0][g+1] + a[1][g-1] + a[1][g] + a[1][g+1] 
+								}
+							} else if (i == (n - 1)){
+								if (g == 0){
+									z = a[i-1][0] + a[i][g+1] + a[i-1][g+1];
+								} else if (g == (m - 1)) {
+									z = a[i][g-1] + a[i-1][g] + a[i-1][g-1];	
+								} else {
+									z = a[i][g-1] + a[i][g+1] + a[i-1][g-1] + a[i-1][g+1] + a[i-1][g] 
+								}
+
+							} else {
+								if (g == 0){
+									z = a[i-1][g] + a[i-1][g+1] + a[i][g+1] + a[i+1][g+1] + a[i+1][g];
+								}
+								if (g == (m - 1)){
+									z = a[i-1][g] + a[i-1][g-1] + a[i][g-1] + a[i+1][g-1] + a[i+1][g];
+								} else {
+									z = a[i-1][g-1] + a[i-1][g] + a[i-1][g+1] + a[i][g+1] + a[i+1][g+1] + a[i+1][g] + a[i+1][g-1] + a[i][g-1];
+								}
+							}
+							if (a[i][g] == 1) {
+								if ((z < 2)||(z > 3)){
+									t[i][g] = 0;
+									s = 'red';
+								} else {
+									t[i][g] = 1;
+									s = 'green';
+								}
+							} else{
+								if (z == 3){
+									t[i][g] = 1;
+									s = 'green';
+								} else {
+									t[i][g] = 0;
+									s = 'red';
+								}
+							}
+							document.getElementById('a_' + i + '_' + g).style.backgroundColor = s;
+							document.getElementById('a_' + i + '_' + g).innerHTML = t[i][g];
+						}
+					}
+					for (var i = 0; i < n; i++){
+						for (var g = 0; g < m; g++){
+							a[i][g] = t[i][g];
+						}
+					}
+				}
+
+			window.onload = function() {
+			
+			var s = "<table style = 'margin: 10px auto'>";
+			for (var i = 0; i < n; i++){
+				s += "<tr>";
+				for (var g = 0; g < m; g++){
+					if (a[i][g] == 0) {
+						s += "<td id='a_" + i + "_" + g + "' style = 'color: white; padding: 5px; background-color: red'>";
+					} else {
+						s += "<td id='a_" + i + "_" + g + "' style = 'color: white; padding: 5px; background-color: green'>";
+					}
+					s += a[i][g];
+					s += "</td>";
+				}
+				s += "</tr>";
+			}
+			s += "</table>"
+			document.getElementById("table").innerHTML = s;
+			var h = setInterval(check, 1000);
+		}
+		</script>
+	</head>
+	<body>
+		<div id = "table">
+		</div>
+			</body>
+</html>
